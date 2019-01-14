@@ -6,5 +6,5 @@ Technologies used:
  - Hibernate 5
  - Maven
  - View: Tiles (JSP, JSTL), Thymeleaf (HTML), CSS, Bootstrap
- - PosgreSQL Database
+ - PostgreSQL Database
  - 3 Modules: database (DAO), Service, Web
