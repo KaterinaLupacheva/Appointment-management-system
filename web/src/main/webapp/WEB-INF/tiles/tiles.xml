@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <!-- Base Definition -->
+    <definition name="base-definition"
+                template="/WEB-INF/tiles/layouts/defaultLayout.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="header" value="/WEB-INF/tiles/template/defaultHeader.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/template/defaultFooter.jsp" />
+    </definition>
+
+    <!-- Home Page -->
+    <definition name="greeting" extends="base-definition">
+        <put-attribute name="title" value="Welcome" />
+        <put-attribute name="body" value="/WEB-INF/jsp/greeting.jsp" />
+    </definition>
+
+    <!-- Services Page -->
+    <definition name="services" extends="base-definition">
+        <put-attribute name="title" value="Services" />
+        <put-attribute name="body" value="/WEB-INF/jsp/services.jsp" />
+    </definition>
+
+    <!-- Masters Page -->
+    <definition name="masters" extends="base-definition">
+        <put-attribute name="title" value="Masters" />
+        <put-attribute name="body" value="/WEB-INF/jsp/masters.jsp" />
+    </definition>
+
+    <!-- Contacts Page -->
+    <definition name="contacts" extends="base-definition">
+        <put-attribute name="title" value="Contacts" />
+        <put-attribute name="body" value="/WEB-INF/jsp/contacts.jsp" />
+    </definition>
+
+    <!-- Appointment Page -->
+    <definition name="appointment" extends="base-definition">
+        <put-attribute name="title" value="Appointment" />
+        <put-attribute name="body" value="/WEB-INF/jsp/appointment.jsp" />
+    </definition>
+
+    <!-- Admin Pages -->
+    <definition name="startpage" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/startpage.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="appointment_menu" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/appointment_menu.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="master_menu" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/master_menu.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="service_menu" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/service_menu.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="currentSchedule" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/currentSchedule.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="masterSchedule" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/masterSchedule.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <!-- Master Appointment Page -->
+    <definition name="master-appointment" extends="base-definition">
+        <put-attribute name="title" value="Appointment" />
+        <put-attribute name="body" value="/WEB-INF/jsp/master-appointment.jsp" />
+    </definition>
+
+    <definition name="appointmentSuccess" extends="base-definition">
+        <put-attribute name="title" value="Appointment" />
+        <put-attribute name="body" value="/WEB-INF/jsp/appointmentSuccess.jsp" />
+    </definition>
+
+    <definition name="view-appointment" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/view-appointment.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="appointment-form" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/appointment-form.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="addAppointment" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/addAppointment.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+    <definition name="errorAddAppointment" extends="base-definition">
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/errorAddAppointment.jsp" />
+        <put-attribute name="footer" value=""/>
+    </definition>
+
+</tiles-definitions>
