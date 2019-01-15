@@ -38,6 +38,9 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private EmailService emailService;
+
     @ModelAttribute("scheduleDate")
     public Set<LocalDate> getAllWorkingDays() {
         List<Schedule> scheduleList = scheduleService.findAll();
@@ -155,7 +158,15 @@ public class AppointmentController {
         appointment.setComment(appointmentDto.getComment());
         appointmentService.save(appointment);
 
-        //add notification to admin
+        //notification to admin
+        emailService.sendSimpleMessage("katerinalupacheva@gmail.com", "New Appointment!",
+                "New appointment: " + "\n\t\tDate: " + appointment.getDay()
+                        + "\n\t\tService: " + appointmentDto.getService()
+                        + "\n\t\tTime: " + appointment.getStartTime()
+                        + "\n\t\tMaster: " + appointment.getMaster().getLastName()
+                        + "\nClient: " + "\n\t\tName: " + client.getLastName()
+                        + "\n\t\tPhone: " + client.getPhone());
+
         status.setComplete();
         return "appointmentSuccess";
     }
