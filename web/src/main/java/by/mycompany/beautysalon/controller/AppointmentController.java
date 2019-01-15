@@ -165,7 +165,8 @@ public class AppointmentController {
                         + "\n\t\tTime: " + appointment.getStartTime()
                         + "\n\t\tMaster: " + appointment.getMaster().getLastName()
                         + "\nClient: " + "\n\t\tName: " + client.getLastName()
-                        + "\n\t\tPhone: " + client.getPhone());
+                        + "\n\t\tPhone: " + client.getPhone()
+                        + "\n\t\tComment: " + appointment.getComment());
 
         status.setComplete();
         return "appointmentSuccess";
