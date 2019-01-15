@@ -1,8 +1,10 @@
 package by.mycompany.beautysalon.configuration;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -16,7 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("by.mycompany.beautysalon")
-@PropertySource("classpath:database.properties")
+@PropertySource({"classpath:database.properties", "classpath:email.properties"})
 @EnableTransactionManagement
 public class ApplicationConfiguration {
 
@@ -31,6 +33,9 @@ public class ApplicationConfiguration {
 
     @Value("${db.driverClass}")
     private String driver;
+
+    @Autowired
+    private Environment env;
 
     @Bean
     public DataSource dataSource() {
@@ -66,10 +71,10 @@ public class ApplicationConfiguration {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername("******@gmail.com");
-        mailSender.setPassword("******");
+        mailSender.setHost(env.getProperty("email.host"));
+        mailSender.setPort(Integer.parseInt(env.getProperty("email.port")));
+        mailSender.setUsername(env.getProperty("email.username"));
+        mailSender.setPassword(env.getProperty("email.password"));
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
