@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static by.mycompany.beautysalon.connection.ConnectionManager.getSession;
-
 @Repository
 public class ClientDaoImpl extends BaseDaoImpl<Client, Integer> implements ClientDao  {
 

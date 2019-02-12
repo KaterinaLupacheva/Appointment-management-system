@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Set;
 
-import static by.mycompany.beautysalon.connection.ConnectionManager.getSession;
-
 @Repository
 public class MasterDaoImpl extends BaseDaoImpl<Master, Integer> implements MasterDao  {
 

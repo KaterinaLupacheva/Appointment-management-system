@@ -17,8 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static by.mycompany.beautysalon.connection.ConnectionManager.getSession;
-
 @Repository
 public class ScheduleDaoImpl extends BaseDaoImpl<Schedule, Integer> implements ScheduleDao {
 

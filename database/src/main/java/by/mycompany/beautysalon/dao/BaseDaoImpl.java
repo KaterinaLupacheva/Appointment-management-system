@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import static by.mycompany.beautysalon.connection.ConnectionManager.getSession;
-
 public class BaseDaoImpl<T, PK extends Serializable> implements BaseDao<T, PK>  {
 
     @Autowired
