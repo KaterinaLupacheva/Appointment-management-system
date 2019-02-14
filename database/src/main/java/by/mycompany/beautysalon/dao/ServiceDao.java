@@ -2,12 +2,18 @@ package by.mycompany.beautysalon.dao;
 
 import by.mycompany.beautysalon.dto.ServiceDto;
 import by.mycompany.beautysalon.entity.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ServiceDao extends BaseDao<Service, Integer> {
+import java.util.List;
 
-    public Service getServiceByTitle(String title);
+public interface ServiceDao extends JpaRepository<Service, Integer> {
 
-    void saveServiceDto(ServiceDto serviceDto);
+    List<Service> findByTitleStartsWithIgnoreCase(String title);
+    Service findByTitle(String title);
 
-    void updateServiceDto(ServiceDto serviceDto);
+//    public Service getServiceByTitle(String title);
+
+//    void saveServiceDto(ServiceDto serviceDto);
+
+//    void updateServiceDto(ServiceDto serviceDto);
 }

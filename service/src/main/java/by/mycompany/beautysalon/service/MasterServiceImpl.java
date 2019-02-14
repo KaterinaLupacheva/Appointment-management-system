@@ -6,13 +6,11 @@ import by.mycompany.beautysalon.dto.MasterDto;
 import by.mycompany.beautysalon.entity.Master;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,7 +25,7 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
     @Override
     @Transactional
     public Master getMasterByLastName(String lastName) {
-        return masterDao.getMasterByLastName(lastName);
+        return masterDao.findMasterByLastName(lastName);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
         master.setLastName(masterDto.getLastName());
         Set<String> serviceTitles = masterDto.getServices();
         for (String title: serviceTitles) {
-            by.mycompany.beautysalon.entity.Service service = serviceDao.getServiceByTitle(title);
+            by.mycompany.beautysalon.entity.Service service = serviceDao.findByTitle(title);
             master.addService(service);
         }
         masterDao.save(master);
@@ -70,12 +68,12 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
     @Transactional
     public MasterDto doMasterDto(int theId) {
         MasterDto masterDto = new MasterDto();
-        Master master = masterDao.find(theId);
-        masterDto.setId(master.getId());
-        masterDto.setFirstName(master.getFirstName());
-        masterDto.setLastName(master.getLastName());
+        Optional<Master> master = masterDao.findById(theId);
+        masterDto.setId(master.get().getId());
+        masterDto.setFirstName(master.get().getFirstName());
+        masterDto.setLastName(master.get().getLastName());
         Set<String> titles = new HashSet<>();
-        List<by.mycompany.beautysalon.entity.Service> services = master.getServices();
+        List<by.mycompany.beautysalon.entity.Service> services = master.get().getServices();
         for(by.mycompany.beautysalon.entity.Service s : services) {
             titles.add(s.getTitle());
         }
@@ -85,16 +83,14 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
     @Override
     @Transactional
     public Master doMaster(MasterDto masterDto, Set<String> updatedServices) {
-        Master master = masterDao.find(masterDto.getId());
-        master.setFirstName(masterDto.getFirstName());
-        master.setLastName(masterDto.getLastName());
-        master.getServices().clear();
+        Optional<Master> master = masterDao.findById(masterDto.getId());
+        master.get().setFirstName(masterDto.getFirstName());
+        master.get().setLastName(masterDto.getLastName());
+        master.get().getServices().clear();
         for(String s : updatedServices) {
-            by.mycompany.beautysalon.entity.Service serviceByTitle = serviceDao.getServiceByTitle(s);
-            master.addService(serviceByTitle);
+            by.mycompany.beautysalon.entity.Service serviceByTitle = serviceDao.findByTitle(s);
+            master.get().addService(serviceByTitle);
         }
-
-        return master;
+        return master.get();
     }
-
 }

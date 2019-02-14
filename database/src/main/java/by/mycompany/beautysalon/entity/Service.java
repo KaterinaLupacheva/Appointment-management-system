@@ -94,6 +94,10 @@ public class Service {
         masters.add(master);
     }
 
+    public  boolean isPersisted() {
+        return id > 0;
+    }
+
     @Override
     public String toString() {
         return "Service{" +

@@ -10,35 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ServiceDaoImpl extends BaseDaoImpl<Service, Integer> implements ServiceDao {
+public abstract class ServiceDaoImpl implements ServiceDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+//    public void saveServiceDto(ServiceDto serviceDto) {
+//        Service service = new Service();
+//        service.setTitle(serviceDto.getTitle());
+//        service.setDuration(serviceDto.getDuration());
+//        save(service);
+//    }
 
-    @Override
-    public Service getServiceByTitle(String title) {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Service> query = session.createQuery("from Service where title = :title", Service.class);
-        query.setParameter("title", title);
-        Service service = query.uniqueResult();
-        return service;
-    }
-
-    @Override
-    public void saveServiceDto(ServiceDto serviceDto) {
-        Session session = sessionFactory.getCurrentSession();
-        Service service = new Service();
-        service.setTitle(serviceDto.getTitle());
-        service.setDuration(serviceDto.getDuration());
-        session.save(service);
-    }
-
-    @Override
-    public void updateServiceDto(ServiceDto serviceDto) {
-        Session session = sessionFactory.getCurrentSession();
-        Service service = session.get(Service.class, serviceDto.getId());
-        service.setTitle(serviceDto.getTitle());
-        service.setDuration(serviceDto.getDuration());
-        session.update(service);
-    }
+//    @Override
+//    public void updateServiceDto(ServiceDto serviceDto) {
+//        Service service = session.get(Service.class, serviceDto.getId());
+//        service.setTitle(serviceDto.getTitle());
+//        service.setDuration(serviceDto.getDuration());
+//        update(service);
+//    }
 }

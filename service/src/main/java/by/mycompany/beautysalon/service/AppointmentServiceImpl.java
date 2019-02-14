@@ -3,6 +3,7 @@ package by.mycompany.beautysalon.service;
 import by.mycompany.beautysalon.dao.AppointmentDao;
 import by.mycompany.beautysalon.entity.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ public class AppointmentServiceImpl extends BaseServiceImpl<Appointment, Integer
     @Override
     @Transactional
     public List<Appointment> getAppointmentsForDay(LocalDate date) {
-        return appointmentDao.getAppointmentsForDay(date);
+        return appointmentDao.getAppointmentsByDayEquals(date);
     }
+
 }

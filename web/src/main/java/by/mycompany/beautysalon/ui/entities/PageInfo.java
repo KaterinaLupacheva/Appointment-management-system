@@ -5,10 +5,10 @@ import com.vaadin.flow.component.icon.Icon;
 public class PageInfo {
 
     private final String link;
-    private final Icon icon;
+    private final String icon;
     private final String title;
 
-    public PageInfo(String link, Icon icon, String title) {
+    public PageInfo(String link, String icon, String title) {
         this.link = link;
         this.icon = icon;
         this.title = title;
@@ -18,7 +18,7 @@ public class PageInfo {
         return link;
     }
 
-    public Icon getIcon() {
+    public String getIcon() {
         return icon;
     }
 
