@@ -17,4 +17,8 @@ public interface MasterService extends BaseService<Master, Integer> {
     MasterDto doMasterDto(int theId);
 
     Master doMaster(MasterDto masterDto, Set<String> updatedServices);
+
+    void deleteMasterDto(MasterDto masterDto);
+
+    Master findMasterById(Integer id);
 }

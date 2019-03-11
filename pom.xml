@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <vaadin.version>12.0.6</vaadin.version>
+        <vaadin.version>12.0.7</vaadin.version>
     </properties>
 
     <modules>
@@ -58,6 +58,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-time-picker-flow -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-time-picker-flow</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

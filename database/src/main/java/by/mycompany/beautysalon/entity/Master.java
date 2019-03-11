@@ -1,5 +1,8 @@
 package by.mycompany.beautysalon.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,9 @@ public class Master {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "main_service")
+    private String mainService;
+
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "service_master", schema = "beauty_salon",
@@ -27,8 +33,7 @@ public class Master {
             inverseJoinColumns = @JoinColumn(name="service_id"))
     List<Service> services;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "master", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "master", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Schedule> schedules;
 
     @OneToMany(fetch = FetchType.LAZY,
@@ -68,6 +73,14 @@ public class Master {
         this.lastName = lastName;
     }
 
+    public String getMainService() {
+        return mainService;
+    }
+
+    public void setMainService(String mainService) {
+        this.mainService = mainService;
+    }
+
     public List<Service> getServices() {
         return services;
     }
@@ -77,6 +90,9 @@ public class Master {
     }
 
     public List<Schedule> getSchedules() {
+        for(Schedule temp : schedules) {
+            temp.getAllScheduleDetails().size();
+        }
         return schedules;
     }
 

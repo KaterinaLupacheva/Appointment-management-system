@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Repository
 public class ScheduleAddDaoImpl implements ScheduleAddDao {
@@ -23,6 +24,12 @@ public class ScheduleAddDaoImpl implements ScheduleAddDao {
 
     @Override
     public void add(Schedule schedule) {
+        if (schedule.getId() != 0) {
+            List<ScheduleDetails> allScheduleDetails = schedule.getAllScheduleDetails();
+            for (ScheduleDetails temp : allScheduleDetails) {
+                scheduleDetailsDao.delete(temp);
+            }
+        }
         LocalTime tempTime = schedule.getStartTime();
         while (tempTime.isBefore(schedule.getEnd_time())) {
             ScheduleDetails scheduleDetails = new ScheduleDetails();

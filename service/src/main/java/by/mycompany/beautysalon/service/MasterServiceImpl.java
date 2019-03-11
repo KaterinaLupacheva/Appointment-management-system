@@ -4,9 +4,9 @@ import by.mycompany.beautysalon.dao.MasterDao;
 import by.mycompany.beautysalon.dao.ServiceDao;
 import by.mycompany.beautysalon.dto.MasterDto;
 import by.mycompany.beautysalon.entity.Master;
+import by.mycompany.beautysalon.entity.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,14 +31,15 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
     @Override
     @Transactional
     public void saveMasterDto(MasterDto masterDto) {
-        Master master = new Master();
+        Master master = masterDao.findById(masterDto.getId()).orElse(new Master());
         master.setFirstName(masterDto.getFirstName());
         master.setLastName(masterDto.getLastName());
-        Set<String> serviceTitles = masterDto.getServices();
-        for (String title: serviceTitles) {
-            by.mycompany.beautysalon.entity.Service service = serviceDao.findByTitle(title);
-            master.addService(service);
-        }
+        master.setMainService(masterDto.getMainService());
+//        Set<String> serviceTitles = masterDto.getServices();
+//        for (String title: serviceTitles) {
+//            by.mycompany.beautysalon.entity.Service service = serviceDao.findByTitle(title);
+//            master.addService(service);
+//        }
         masterDao.save(master);
     }
 
@@ -52,6 +53,7 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
             masterDto.setId(tempMaster.getId());
             masterDto.setFirstName(tempMaster.getFirstName());
             masterDto.setLastName(tempMaster.getLastName());
+            masterDto.setMainService(tempMaster.getMainService());
             Set<String> serviceTitle = new HashSet<>();
             List<by.mycompany.beautysalon.entity.Service> tempMasterServices = tempMaster.getServices();
             for (by.mycompany.beautysalon.entity.Service tempService : tempMasterServices) {
@@ -68,15 +70,16 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
     @Transactional
     public MasterDto doMasterDto(int theId) {
         MasterDto masterDto = new MasterDto();
-        Optional<Master> master = masterDao.findById(theId);
-        masterDto.setId(master.get().getId());
-        masterDto.setFirstName(master.get().getFirstName());
-        masterDto.setLastName(master.get().getLastName());
-        Set<String> titles = new HashSet<>();
-        List<by.mycompany.beautysalon.entity.Service> services = master.get().getServices();
-        for(by.mycompany.beautysalon.entity.Service s : services) {
-            titles.add(s.getTitle());
-        }
+//        Master master = masterDao.findById(theId);
+//        masterDto.setId(master.getId());
+//        masterDto.setFirstName(master.getFirstName());
+//        masterDto.setLastName(master.getLastName());
+//        masterDto.setMainService(master.getMainService());
+//        Set<String> titles = new HashSet<>();
+//        List<by.mycompany.beautysalon.entity.Service> services = master.getServices();
+//        for(by.mycompany.beautysalon.entity.Service s : services) {
+//            titles.add(s.getTitle());
+//        }
         return masterDto;
     }
 
@@ -86,11 +89,26 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
         Optional<Master> master = masterDao.findById(masterDto.getId());
         master.get().setFirstName(masterDto.getFirstName());
         master.get().setLastName(masterDto.getLastName());
+        master.get().setMainService(masterDto.getMainService());
         master.get().getServices().clear();
         for(String s : updatedServices) {
             by.mycompany.beautysalon.entity.Service serviceByTitle = serviceDao.findByTitle(s);
             master.get().addService(serviceByTitle);
         }
         return master.get();
+    }
+
+    @Override
+    @Transactional
+    public void deleteMasterDto(MasterDto masterDto) {
+        masterDao.deleteCust(masterDto.getId());
+    }
+
+    @Override
+    @Transactional
+    public Master findMasterById(Integer id) {
+        Master master = masterDao.findMasterById(id);
+        master.getSchedules().size();
+        return master;
     }
 }

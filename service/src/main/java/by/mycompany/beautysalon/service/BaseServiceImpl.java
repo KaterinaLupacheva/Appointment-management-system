@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public class BaseServiceImpl<T, PK extends Serializable> implements BaseService<T,PK> {
 
@@ -17,8 +18,8 @@ public class BaseServiceImpl<T, PK extends Serializable> implements BaseService<
     }
 
     @Override
-    public T find(PK id) {
-        return (T) repository.findById((Integer) id);
+    public Optional<T> find(PK id) {
+        return (Optional<T>) repository.findById((Integer) id);
     }
 
     @Override

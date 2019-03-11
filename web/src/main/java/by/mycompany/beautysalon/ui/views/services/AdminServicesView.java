@@ -10,6 +10,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -47,8 +48,8 @@ public class AdminServicesView extends VerticalLayout {
         search.setValueChangeMode(ValueChangeMode.EAGER);
         search.setPlaceholder("Search");
         search.addValueChangeListener(e-> updateList(e.getValue()));
-        this.addNewService = new Button("Add Service", VaadinIcon.PLUS_CIRCLE_O.create());
-        addNewService.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+        this.addNewService = new Button("Add Service", new Icon(VaadinIcon.PLUS_CIRCLE_O));
+//        addNewService.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
         addNewService.addClickListener(e -> {
             grid.asSingleSelect().clear();
             editor.setService(new Service());

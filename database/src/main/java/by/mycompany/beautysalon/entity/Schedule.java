@@ -29,11 +29,11 @@ public class Schedule {
     @Column(name = "end_time")
     private LocalTime end_time;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "master_id")
     private Master master;
 
-    @OneToMany(mappedBy = "schedule", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.MERGE)
     private List<ScheduleDetails> allScheduleDetails;
 
     public Schedule() {

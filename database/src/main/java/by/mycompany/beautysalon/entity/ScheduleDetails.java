@@ -20,7 +20,7 @@ public class ScheduleDetails implements Comparable<ScheduleDetails> {
     @Column(name = "available")
     private Availability available;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 

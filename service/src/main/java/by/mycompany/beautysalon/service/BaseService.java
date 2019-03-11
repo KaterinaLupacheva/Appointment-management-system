@@ -15,7 +15,7 @@ public interface BaseService<T, PK extends Serializable> {
 
     void save(T entity);
 
-    T find(PK id);
+    Optional<T> find(PK id);
 
     void delete(T entity);
 
