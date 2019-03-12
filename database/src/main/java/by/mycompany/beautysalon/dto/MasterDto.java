@@ -1,5 +1,10 @@
 package by.mycompany.beautysalon.dto;
 
+import by.mycompany.beautysalon.entity.Master;
+import by.mycompany.beautysalon.entity.Service;
+
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +24,18 @@ public class MasterDto {
         this.firstName = firstName;
         this.lastName = lastName;
         this.services = services;
+    }
+
+    public MasterDto(Master master) {
+        this.id = master.getId();
+        this.firstName = master.getFirstName();
+        this.lastName  = master.getLastName();
+        this.mainService = master.getMainService();
+        this.services = new HashSet<>();
+        services = master.getServices()
+                .stream()
+                .map(service -> service.getTitle())
+                .collect(Collectors.toSet());
     }
 
     public Integer getId() {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,24 +47,10 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
     @Override
     @Transactional
     public List<MasterDto> getMasterDtos() {
-        List<Master> allMasters = masterDao.findAll();
-        List<MasterDto> allMasterDto = new ArrayList<>();
-        for(Master tempMaster : allMasters) {
-            MasterDto masterDto = new MasterDto();
-            masterDto.setId(tempMaster.getId());
-            masterDto.setFirstName(tempMaster.getFirstName());
-            masterDto.setLastName(tempMaster.getLastName());
-            masterDto.setMainService(tempMaster.getMainService());
-            Set<String> serviceTitle = new HashSet<>();
-            List<by.mycompany.beautysalon.entity.Service> tempMasterServices = tempMaster.getServices();
-            for (by.mycompany.beautysalon.entity.Service tempService : tempMasterServices) {
-                String title = tempService.getTitle();
-                serviceTitle.add(title);
-                masterDto.setServices(serviceTitle);
-            }
-            allMasterDto.add(masterDto);
-        }
-        return allMasterDto;
+        return masterDao.findAllByOrderByLastName()
+                .stream()
+                .map(master -> new MasterDto(master))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -110,5 +97,13 @@ public class MasterServiceImpl extends BaseServiceImpl<Master, Integer> implemen
         Master master = masterDao.findMasterById(id);
         master.getSchedules().size();
         return master;
+    }
+
+    @Override
+    public List<MasterDto> findAllByNameContaining(String name) {
+        return masterDao.findAllByLastNameOrFirstNameContainingIgnoreCase(name, name)
+                .stream()
+                .map(master -> new MasterDto(master))
+                .collect(Collectors.toList());
     }
 }

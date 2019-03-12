@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ServiceDao extends JpaRepository<Service, Integer> {
 
-    List<Service> findByTitleStartsWithIgnoreCase(String title);
     Service findByTitle(String title);
+    List<Service> findByTitleContaining(String title);
 
 //    public Service getServiceByTitle(String title);
 

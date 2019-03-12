@@ -21,4 +21,6 @@ public interface MasterService extends BaseService<Master, Integer> {
     void deleteMasterDto(MasterDto masterDto);
 
     Master findMasterById(Integer id);
+
+    List<MasterDto> findAllByNameContaining(String name);
 }

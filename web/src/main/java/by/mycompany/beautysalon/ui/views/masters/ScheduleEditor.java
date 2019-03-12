@@ -12,13 +12,18 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.StringToIntegerConverter;
+import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,23 +33,25 @@ public class ScheduleEditor extends VerticalLayout {
 
     private MasterService masterService;
     private ScheduleService scheduleService;
+    private Schedule scheduleEdit;
     private MasterDto masterDto;
     private Integer masterDtoId;
     private List<Schedule> schedules;
 
-    private Grid<Schedule> scheduleGrid = new Grid<>(Schedule.class);
+    private Grid<Schedule> scheduleGrid = new Grid<>();
     private Binder<Schedule> binder = new Binder<>(Schedule.class);
     private Button addSchedule = new Button("Add New Schedule");
-//    private ChangeHandler changeHandler;
 
     @Autowired
     private ScheduleEditor(MasterService masterService, ScheduleService scheduleService) {
         this.masterService = masterService;
         this.scheduleService = scheduleService;
-        scheduleGrid.setColumns("day", "startTime", "end_time");
-        Grid.Column<Schedule> dayColumn = scheduleGrid.getColumnByKey("day");
-        Grid.Column<Schedule> startTimeColumn = scheduleGrid.getColumnByKey("startTime");
-        Grid.Column<Schedule> endTimeColumn = scheduleGrid.getColumnByKey("end_time").setHeader("End Time");
+//        scheduleGrid.setColumns("day", "startTime", "end_time");
+        Grid.Column<Schedule> dayColumn = scheduleGrid
+                .addColumn(new LocalDateRenderer<>(Schedule::getDay, DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                .setHeader("Day");
+        Grid.Column<Schedule> startTimeColumn = scheduleGrid.addColumn(Schedule::getStartTime).setHeader("Start Time");
+        Grid.Column<Schedule> endTimeColumn = scheduleGrid.addColumn(Schedule::getEnd_time).setHeader("End Time");
         add(addSchedule, scheduleGrid);
         setVisible(false);
         setWidth("550px");
@@ -58,12 +65,14 @@ public class ScheduleEditor extends VerticalLayout {
     }
 
     private void gridEditor(Grid.Column<Schedule> dayColumn, Grid.Column<Schedule> startTimeColumn, Grid.Column<Schedule> endTimeColumn) {
-        final Schedule[] editedSchedule = {null};
+//        final Schedule[] editedSchedule = new Schedule[1];
+        //        Schedule editedSchedule;
         Editor<Schedule> editor = scheduleGrid.getEditor();
         editor.setBinder(binder);
         editor.setBuffered(true);
 
         DatePicker workingDay = new DatePicker();
+        workingDay.setLocale(Locale.GERMAN);
         binder.forField(workingDay).bind("day");
         dayColumn.setEditorComponent(workingDay);
 
@@ -85,7 +94,8 @@ public class ScheduleEditor extends VerticalLayout {
             edit.addClassName("edit");
             edit.addClickListener(e -> {
                 editor.editItem(schedule);
-                editedSchedule[0] = schedule;
+                scheduleEdit = schedule;
+//                editedSchedule[0] = schedule;
             });
             edit.setEnabled(!editor.isOpen());
             editButtons.add(edit);
@@ -110,19 +120,32 @@ public class ScheduleEditor extends VerticalLayout {
         editorColumn.setEditorComponent(buttons);
 
         editor.addSaveListener(event -> {
-            if (editedSchedule[0].getId() == 0) {
-                editedSchedule[0].setDay(event.getItem().getDay());
-                editedSchedule[0].setStartTime(event.getItem().getStartTime());
-                editedSchedule[0].setEnd_time(event.getItem().getEnd_time());
+            if (scheduleEdit.getId() == 0) {
+                scheduleEdit.setDay(event.getItem().getDay());
+                scheduleEdit.setStartTime(event.getItem().getStartTime());
+                scheduleEdit.setEnd_time(event.getItem().getEnd_time());
                 Master master = masterService.findMasterById(masterDtoId);
-                master.addSchedule(editedSchedule[0]);
-                scheduleService.add(editedSchedule[0]);
+                master.addSchedule(scheduleEdit);
+                scheduleService.add(scheduleEdit);
             } else {
-                editedSchedule[0].setDay(event.getItem().getDay());
-                editedSchedule[0].setStartTime(event.getItem().getStartTime());
-                editedSchedule[0].setEnd_time(event.getItem().getEnd_time());
-                scheduleService.add(editedSchedule[0]);
+                scheduleEdit.setDay(event.getItem().getDay());
+                scheduleEdit.setStartTime(event.getItem().getStartTime());
+                scheduleEdit.setEnd_time(event.getItem().getEnd_time());
+                scheduleService.add(scheduleEdit);
             }
+//            if (editedSchedule[0].getId() == 0) {
+//                editedSchedule[0].setDay(event.getItem().getDay());
+//                editedSchedule[0].setStartTime(event.getItem().getStartTime());
+//                editedSchedule[0].setEnd_time(event.getItem().getEnd_time());
+//                Master master = masterService.findMasterById(masterDtoId);
+//                master.addSchedule(editedSchedule[0]);
+//                scheduleService.add(editedSchedule[0]);
+//            } else {
+//                editedSchedule[0].setDay(event.getItem().getDay());
+//                editedSchedule[0].setStartTime(event.getItem().getStartTime());
+//                editedSchedule[0].setEnd_time(event.getItem().getEnd_time());
+//                scheduleService.add(editedSchedule[0]);
+//            }
         });
     }
 
@@ -133,13 +156,5 @@ public class ScheduleEditor extends VerticalLayout {
         scheduleGrid.setItems(schedules);
         setVisible(true);
     }
-
-//    public interface ChangeHandler{
-//        void onChange();
-//    }
-//
-//    public void setChangeHandler(ChangeHandler ch) {
-//        this.changeHandler = ch;
-//    }
 
 }

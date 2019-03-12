@@ -1,6 +1,7 @@
 package by.mycompany.beautysalon.entity;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Service {
     private String title;
 
     @Column(name = "duration")
-    private int duration;
+    private Double duration;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -34,7 +35,7 @@ public class Service {
     public Service() {
     }
 
-    public Service(String title, int duration) {
+    public Service(String title, Double duration) {
         this.title = title;
         this.duration = duration;
     }
@@ -55,11 +56,11 @@ public class Service {
         this.title = title;
     }
 
-    public int getDuration() {
+    public Double getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Double duration) {
         this.duration = duration;
     }
 

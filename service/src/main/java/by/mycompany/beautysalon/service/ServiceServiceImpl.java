@@ -29,8 +29,8 @@ public class ServiceServiceImpl extends BaseServiceImpl<Service, Integer> implem
     }
 
     @Override
-    public List<Service> findByTitleStartsWithIgnoreCase(String title) {
-        return serviceDao.findByTitleStartsWithIgnoreCase(title);
+    public List<Service> findByTitleContaining(String title) {
+        return serviceDao.findByTitleContaining(title);
     }
 
 //    @Override
